@@ -23,9 +23,9 @@ extension Model {
         let subject = PassthroughSubject<Value, Never>()
         return ComposableReadWrite(updates: subject) {
             return storage
-
-        } setter: {
-            newValue in storage = newValue
+        } setter: { newValue in
+            guard storage != newValue else { return }
+            storage = newValue
             subject.send(newValue)
         }
     }
