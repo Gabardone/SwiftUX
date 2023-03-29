@@ -192,7 +192,46 @@ final class KeyPathModelTests: XCTestCase {
         integerModel.value = thirdValue.integer
         XCTAssertEqual(integerModel.value, thirdValue.integer)
 
-        waitForExpectations(timeout: 10000.0)
+        waitForExpectations(timeout: 1.0)
+
+        integerSubscription.cancel()
+        stringSubscription.cancel()
+        rootSubscription.cancel()
+    }
+
+    /// Checks that updates on a keypath model property with the same value cause no update callbacks.
+    func testEqualityDoesNotUpdateAnyone() {
+        let initialValue = Dummy(string: "Potato", integer: 7)
+        let rootModel = Model.root(initialValue: initialValue)
+
+        // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
+        // modification.
+        let rootUpdateExpectation = expectation(description: "Root model property was updated")
+        rootUpdateExpectation.isInverted = true
+        let rootSubscription = rootModel.updates.sink { newValue in
+            rootUpdateExpectation.fulfill()
+        }
+
+        let stringKeyPath = \Dummy.string
+        var stringModel = rootModel.writableKeyPath(stringKeyPath)
+        let stringExpectation = expectation(description: "String keypath model property was updated")
+        stringExpectation.isInverted = true
+        let stringSubscription = stringModel.updates.sink { newValue in
+            stringExpectation.fulfill()
+        }
+
+        let integerKeyPath = \Dummy.integer
+        var integerModel = rootModel.writableKeyPath(integerKeyPath)
+        let integerExpectation = expectation(description: "Integer keypath model property was updated")
+        integerExpectation.isInverted = true
+        let integerSubscription = integerModel.updates.sink { newValue in
+            integerExpectation.fulfill()
+        }
+
+        stringModel.value = initialValue.string
+        integerModel.value = initialValue.integer
+
+        waitForExpectations(timeout: 0.5)
 
         integerSubscription.cancel()
         stringSubscription.cancel()

@@ -43,4 +43,23 @@ final class RootModelTests: XCTestCase {
 
         subscription.cancel()
     }
+
+    /// Verifies that setting a root model property with the same value does not trigger updates publisher to emit.
+    func testEqualityDoesNotUpdate() {
+        let value = "Potato"
+
+        var rootModel = Model.root(initialValue: "Potato")
+
+        let updateExpectation = expectation(description: "Update subscription called")
+        updateExpectation.isInverted = true
+        let subscription = rootModel.updates.sink { newValue in
+            updateExpectation.fulfill()
+        }
+
+        rootModel.value = value
+
+        waitForExpectations(timeout: 0.5)
+
+        subscription.cancel()
+    }
 }
