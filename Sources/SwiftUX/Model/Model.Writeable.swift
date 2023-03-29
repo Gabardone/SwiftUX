@@ -1,5 +1,5 @@
 //
-//  Model.ComposableReadWrite.swift
+//  Model.Writeable.swift
 //  
 //
 //  Created by Óscar Morales Vivó on 3/26/23.
@@ -10,7 +10,14 @@ import Foundation
 
 
 extension Model {
-    struct ComposableReadWrite: ReadWrite {
+    /**
+     Standard implementation of `WriteableProperty`
+
+     We will almost always use these in practice as opposed to the protocol existentials themselves. Having a protocol
+     however allows for easy declaration of common functionality and polymorphism for the different model property
+     struct types.
+     */
+    public struct Writeable: WriteableProperty {
 
         // MARK: - Initialization
 

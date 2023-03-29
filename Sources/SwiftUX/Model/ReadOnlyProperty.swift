@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ReadOnlyProperty.swift
 //  
 //
 //  Created by Óscar Morales Vivó on 3/25/23.
@@ -55,7 +55,18 @@ public protocol ReadOnlyProperty<Value> {
     var updates: any UpdatePublisher { get }
 }
 
-extension Model {
-    /// Typealias for a read-only model property.
-    public typealias ReadOnly = ReadOnlyProperty where Value == Model.Value
+public extension ReadOnlyProperty {
+    /**
+     Converter to explicit readonly model property type.
+
+     Since most logic will deal with the explicit model property types, this allows us to quickly convert a read/write
+     or editable type into a readonly one.
+     - Returns: a readonly model property that references the same value as the caller, including update publisher
+     behavior.
+     */
+    func readonly() -> Model<Value>.ReadOnly {
+        return .init(updates: updates) {
+            self.value
+        }
+    }
 }

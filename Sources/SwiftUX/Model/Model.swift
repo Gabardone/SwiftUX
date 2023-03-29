@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Model.swift
 //  
 //
 //  Created by Óscar Morales Vivó on 3/26/23.

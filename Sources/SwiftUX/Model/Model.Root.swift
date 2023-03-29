@@ -1,8 +1,8 @@
 //
 //  Model.Root.swift
-//  Teibolto Classic
 //
-//  Created by Óscar Morales Vivó on 12/11/22.
+//
+//  Created by Óscar Morales Vivó on 3/26/23.
 //
 
 import Combine
@@ -18,10 +18,10 @@ extension Model {
      - Parameter initialValue: The initial value of the model.
      - Returns: A read/write model property whose value is `initialValue`
      */
-    public static func root(initialValue: Value) -> some ReadWrite<Value> {
+    public static func root(initialValue: Value) -> Writeable {
         var storage = initialValue
         let subject = PassthroughSubject<Value, Never>()
-        return ComposableReadWrite(updates: subject) {
+        return .init(updates: subject) {
             return storage
         } setter: { newValue in
             guard storage != newValue else { return }

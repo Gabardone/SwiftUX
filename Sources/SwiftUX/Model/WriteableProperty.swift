@@ -23,8 +23,3 @@ public protocol WriteableProperty<Value>: ReadOnlyProperty where Value: Equatabl
      */
     var value: Value { get set }
 }
-
-public extension Model {
-    /// Typealias for a read/write model property.
-    typealias ReadWrite = WriteableProperty where Value == Model.Value
-}

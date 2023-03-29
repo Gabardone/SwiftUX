@@ -8,7 +8,7 @@
 import Foundation
 
 
-public extension Model.ReadWrite {
+public extension WriteableProperty {
     /**
      Returns a read/write model property that vends the value at the caller's `keyPath`
 
@@ -17,12 +17,12 @@ public extension Model.ReadWrite {
      - Parameter keyPath: The key path pointing to the property of the caller we want the new model property to manage.
      - Returns: A read/write model property that manages the value at the caller's `keyPath`.
      */
-    func writableKeyPath<Derived: Equatable>(_ keyPath: WritableKeyPath<Value, Derived>) -> some Model.ReadWrite<Derived> {
+    func writableKeyPath<Derived: Equatable>(_ keyPath: WritableKeyPath<Value, Derived>) -> Model<Derived>.Writeable {
         // Required for compilation. Remember that copies are expected to point to the same value/update publisher.
         var proxy = self
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
-        return Model.ComposableReadWrite(
+        return .init(
             updates: updates.eraseToAnyPublisher().map(keyPath).prepend(value[keyPath: keyPath]).removeDuplicates().dropFirst()
         ) {
             proxy.value[keyPath: keyPath]
@@ -33,7 +33,7 @@ public extension Model.ReadWrite {
     }
 }
 
-public extension Model.ReadOnly {
+public extension ReadOnlyProperty {
     /**
      Returns a read-only model property that vends the value at the caller's `keyPath`
 
@@ -43,10 +43,10 @@ public extension Model.ReadOnly {
      - Parameter keyPath: The key path pointing to the property of the caller we want the new model property to manage.
      - Returns: A read-only model property that manages the value at the caller's `keyPath`.
      */
-    func readOnlyKeyPath<Derived: Equatable>(_ keyPath: KeyPath<Value, Derived>) -> some Model.ReadOnly<Derived> {
+    func readOnlyKeyPath<Derived: Equatable>(_ keyPath: KeyPath<Value, Derived>) -> Model<Derived>.ReadOnly {
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
-        return Model.ComposableReadOnly(
+        return .init(
             updates: updates.eraseToAnyPublisher().map(keyPath).prepend(value[keyPath: keyPath]).removeDuplicates().dropFirst()
         ) {
             value[keyPath: keyPath]
