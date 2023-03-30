@@ -110,3 +110,25 @@ public extension Controller where Persistence == Void {
         self.init(id: id, modelProperty: modelProperty, persistence: ())
     }
 }
+
+// MARK: Editability
+
+public extension Controller where ModelProperty: WriteableProperty {
+    /**
+     The edit block type for a controller with safe editing.
+
+     The block takes an initial value, applies any changes to it as desired, and returns the resulting value.
+     */
+    typealias Edit = (Model) -> Model
+
+    /**
+     Applies the given edit to the current model value and updates it with the result.
+     - Parameter edit: The edit operation to apply to the model's value. It gets as input the current value of the model
+     and outputs the new value.
+     - Todo: Undo/Redo support.
+     - Todo: Persistence support.
+     */
+    func apply(edit: Edit) {
+        modelProperty.value = edit(modelProperty.value)
+    }
+}
