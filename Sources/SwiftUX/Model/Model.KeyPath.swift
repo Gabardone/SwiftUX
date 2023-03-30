@@ -22,7 +22,12 @@ public extension WriteableProperty {
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
         return .init(
-            updates: updates.eraseToAnyPublisher().map(keyPath).prepend(value[keyPath: keyPath]).removeDuplicates().dropFirst()
+            updates: updates
+                .eraseToAnyPublisher()
+                .map(keyPath)
+                .prepend(value[keyPath: keyPath])
+                .removeDuplicates()
+                .dropFirst()
         ) {
             proxy.value[keyPath: keyPath]
         } setter: { newValue in
@@ -46,7 +51,12 @@ public extension ReadOnlyProperty {
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
         .init(
-            updates: updates.eraseToAnyPublisher().map(keyPath).prepend(value[keyPath: keyPath]).removeDuplicates().dropFirst()
+            updates: updates
+                .eraseToAnyPublisher()
+                .map(keyPath)
+                .prepend(value[keyPath: keyPath])
+                .removeDuplicates()
+                .dropFirst()
         ) {
             value[keyPath: keyPath]
         }

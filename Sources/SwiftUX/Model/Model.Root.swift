@@ -8,7 +8,8 @@
 import Combine
 import Foundation
 
-public extension Model.Writeable {
+// public extension Model.Writeable
+public extension ComposableWriteableProperty {
     /**
      Returns a Model.Writeable that manages a value initialized with the given one.
 
