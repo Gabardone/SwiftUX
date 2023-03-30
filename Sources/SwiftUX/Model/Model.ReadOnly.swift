@@ -1,6 +1,6 @@
 //
 //  Model.ReadOnly.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/25/23.
 //
@@ -8,8 +8,7 @@
 import Combine
 import Foundation
 
-
-extension Model {
+public extension Model {
     /**
      Standard implementation of `ReadOnlyProperty`
 
@@ -17,8 +16,7 @@ extension Model {
      however allows for easy declaration of common functionality and polymorphism for the different model property
      struct types.
      */
-    public struct ReadOnly: ReadOnlyProperty {
-
+    struct ReadOnly: ReadOnlyProperty {
         // MARK: - Initialization
 
         /**

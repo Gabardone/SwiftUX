@@ -1,6 +1,6 @@
 //
 //  ReadOnlyPropertyTests.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/28/23.
 //
@@ -9,7 +9,6 @@ import SwiftUX
 import XCTest
 
 final class ReadOnlyPropertyTests: XCTestCase {
-
     /// Checks that a readonly version of an existing model property still gets the right value and updates the same.
     func testReadonlyBehavior() {
         let initialValue = "Potato"

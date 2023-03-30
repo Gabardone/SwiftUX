@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-extension Model.Writeable {
+public extension Model.Writeable {
     /**
      Returns a Model.Writeable that manages a value initialized with the given one.
 
@@ -18,7 +18,7 @@ extension Model.Writeable {
      - Parameter initialValue: The initial value of the model.
      - Returns: A read/write model property whose value is `initialValue`
      */
-    public static func root(initialValue: Value) -> Self {
+    static func root(initialValue: Value) -> Self {
         var storage = initialValue
         let subject = PassthroughSubject<Value, Never>()
         return .init(updates: subject) {

@@ -1,6 +1,6 @@
 //
 //  ReadOnlyProperty.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/25/23.
 //
@@ -20,7 +20,6 @@ import Foundation
  same value and its `updates` publisher should be the same.
  */
 public protocol ReadOnlyProperty<Value> {
-
     // MARK: - Types
 
     /**
@@ -65,7 +64,7 @@ public extension ReadOnlyProperty {
      behavior.
      */
     func readonly() -> Model<Value>.ReadOnly {
-        return .init(updates: updates) {
+        .init(updates: updates) {
             self.value
         }
     }

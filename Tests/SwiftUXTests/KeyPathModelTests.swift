@@ -1,6 +1,6 @@
 //
 //  KeyPathModelTests.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/27/23.
 //
@@ -135,7 +135,6 @@ final class KeyPathModelTests: XCTestCase {
         rootSubscription.cancel()
     }
 
-
     /// Tests that a read/write keypath model's parent updates as expected when the keypath model is updated.
     func testReadWriteKeyPathModelChangePropagation() {
         let initialValue = Dummy(string: "Potato", integer: 7)
@@ -208,7 +207,7 @@ final class KeyPathModelTests: XCTestCase {
         // modification.
         let rootUpdateExpectation = expectation(description: "Root model property was updated")
         rootUpdateExpectation.isInverted = true
-        let rootSubscription = rootModel.updates.sink { newValue in
+        let rootSubscription = rootModel.updates.sink { _ in
             rootUpdateExpectation.fulfill()
         }
 
@@ -216,7 +215,7 @@ final class KeyPathModelTests: XCTestCase {
         var stringModel = rootModel.writableKeyPath(stringKeyPath)
         let stringExpectation = expectation(description: "String keypath model property was updated")
         stringExpectation.isInverted = true
-        let stringSubscription = stringModel.updates.sink { newValue in
+        let stringSubscription = stringModel.updates.sink { _ in
             stringExpectation.fulfill()
         }
 
@@ -224,7 +223,7 @@ final class KeyPathModelTests: XCTestCase {
         var integerModel = rootModel.writableKeyPath(integerKeyPath)
         let integerExpectation = expectation(description: "Integer keypath model property was updated")
         integerExpectation.isInverted = true
-        let integerSubscription = integerModel.updates.sink { newValue in
+        let integerSubscription = integerModel.updates.sink { _ in
             integerExpectation.fulfill()
         }
 

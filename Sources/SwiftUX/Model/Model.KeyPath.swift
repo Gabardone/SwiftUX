@@ -1,12 +1,11 @@
 //
 //  Model.KeyPath.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/26/23.
 //
 
 import Foundation
-
 
 public extension WriteableProperty {
     /**
@@ -46,7 +45,7 @@ public extension ReadOnlyProperty {
     func readOnlyKeyPath<Derived: Equatable>(_ keyPath: KeyPath<Value, Derived>) -> Model<Derived>.ReadOnly {
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
-        return .init(
+        .init(
             updates: updates.eraseToAnyPublisher().map(keyPath).prepend(value[keyPath: keyPath]).removeDuplicates().dropFirst()
         ) {
             value[keyPath: keyPath]

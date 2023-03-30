@@ -1,6 +1,6 @@
 //
 //  RootModelTests.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/26/23.
 //
@@ -9,7 +9,6 @@ import SwiftUX
 import XCTest
 
 final class RootModelTests: XCTestCase {
-
     /// Sanity tests for root model behavior.
     func testRootModel() {
         let initialValue = "Potato"
@@ -52,7 +51,7 @@ final class RootModelTests: XCTestCase {
 
         let updateExpectation = expectation(description: "Update subscription called")
         updateExpectation.isInverted = true
-        let subscription = rootModel.updates.sink { newValue in
+        let subscription = rootModel.updates.sink { _ in
             updateExpectation.fulfill()
         }
 

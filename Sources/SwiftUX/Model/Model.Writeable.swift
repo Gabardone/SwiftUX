@@ -1,6 +1,6 @@
 //
 //  Model.Writeable.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/26/23.
 //
@@ -8,8 +8,7 @@
 import Combine
 import Foundation
 
-
-extension Model {
+public extension Model {
     /**
      Standard implementation of `WriteableProperty`
 
@@ -17,8 +16,7 @@ extension Model {
      however allows for easy declaration of common functionality and polymorphism for the different model property
      struct types.
      */
-    public struct Writeable: WriteableProperty {
-
+    struct Writeable: WriteableProperty {
         // MARK: - Initialization
 
         /**
@@ -35,6 +33,7 @@ extension Model {
         }
 
         // MARK: - Types
+
         /**
          A block that implements a `ComposableProperty`'s getter.
 

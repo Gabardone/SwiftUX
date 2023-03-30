@@ -1,12 +1,11 @@
 //
 //  Model.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/26/23.
 //
 
 import Foundation
-
 
 /**
  Namespace `enum` for model types, protocols and utilities.

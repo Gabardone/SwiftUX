@@ -1,6 +1,6 @@
 //
 //  WriteableProperty.swift
-//  
+//
 //
 //  Created by Óscar Morales Vivó on 3/25/23.
 //
@@ -17,7 +17,6 @@ import Foundation
  the point of use and there are no sync validation or transaction concerns.
  */
 public protocol WriteableProperty<Value>: ReadOnlyProperty where Value: Equatable {
-
     /**
      The value of a `WriteableModelProtocol` implementation can, as expected, be set.
      */
