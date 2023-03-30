@@ -19,7 +19,7 @@ final class KeyPathModelTests: XCTestCase {
     func testReadOnlyKeyPathModel() {
         let initialValue = Dummy(string: "Potato", integer: 7)
         let secondValue = Dummy(string: "No Potato", integer: 0)
-        var rootModel = Model.root(initialValue: initialValue)
+        var rootModel = Model.Writeable.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.
@@ -79,7 +79,7 @@ final class KeyPathModelTests: XCTestCase {
     func testReadWriteKeyPathModelParentalChangePropagation() {
         let initialValue = Dummy(string: "Potato", integer: 7)
         let secondValue = Dummy(string: "No Potato", integer: 0)
-        var rootModel = Model.root(initialValue: initialValue)
+        var rootModel = Model.Writeable.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.
@@ -141,7 +141,7 @@ final class KeyPathModelTests: XCTestCase {
         let initialValue = Dummy(string: "Potato", integer: 7)
         let secondValue = Dummy(string: "No Potato", integer: 7)
         let thirdValue = Dummy(string: "No Potato", integer: 0)
-        let rootModel = Model.root(initialValue: initialValue)
+        let rootModel = Model.Writeable.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.
@@ -202,7 +202,7 @@ final class KeyPathModelTests: XCTestCase {
     /// Checks that updates on a keypath model property with the same value cause no update callbacks.
     func testEqualityDoesNotUpdateAnyone() {
         let initialValue = Dummy(string: "Potato", integer: 7)
-        let rootModel = Model.root(initialValue: initialValue)
+        let rootModel = Model.Writeable.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.

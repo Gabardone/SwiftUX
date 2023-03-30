@@ -8,9 +8,9 @@
 import Combine
 import Foundation
 
-extension Model {
+extension Model.Writeable {
     /**
-     Returns a WriteableModel that manages a value initialized with the given one.
+     Returns a Model.Writeable that manages a value initialized with the given one.
 
      This model is the simplest to use as a root model for a hierarchy or simply as a modifiable model for simple
      implementations. There is no read-only version of this method as it doesn't make a ton of sense to have a root
@@ -18,7 +18,7 @@ extension Model {
      - Parameter initialValue: The initial value of the model.
      - Returns: A read/write model property whose value is `initialValue`
      */
-    public static func root(initialValue: Value) -> Writeable {
+    public static func root(initialValue: Value) -> Self {
         var storage = initialValue
         let subject = PassthroughSubject<Value, Never>()
         return .init(updates: subject) {
