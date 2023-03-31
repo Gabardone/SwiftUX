@@ -35,7 +35,8 @@ private let controllerLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, 
  to intantiate the controller type in those cases.
  */
 @MainActor
-open class Controller<ID: Hashable, ModelProperty: ReadOnlyProperty, Persistence>: Identifiable, ObservableObject {
+open class Controller<ID: Hashable, ModelProperty: ReadOnlyProperty, Persistence>:
+    ControllerProtocol, ObservableObject {
     /**
      Designated initializer.
 
