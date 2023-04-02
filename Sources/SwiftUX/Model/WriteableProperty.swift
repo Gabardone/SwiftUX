@@ -19,6 +19,9 @@ import Foundation
 public protocol WriteableProperty<Value>: ReadOnlyProperty where Value: Equatable {
     /**
      The value of a `WriteableModelProtocol` implementation can, as expected, be set.
+     - Note: The setter is marked as `nonmutating` to enforce the reference semantics of the held value and to avoid
+     tripping the Swift mutability reentry checker since setters tend to have a lot of side effects due to them
+     triggering `updates` publishers at the tail end of their work.
      */
-    var value: Value { get set }
+    var value: Value { get nonmutating set }
 }

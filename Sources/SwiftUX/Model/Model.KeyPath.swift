@@ -18,10 +18,9 @@ public extension WriteableProperty {
      */
     func writableKeyPath<Derived: Equatable>(_ keyPath: WritableKeyPath<Value, Derived>) -> Model<Derived>.Writeable {
         // Required for compilation. Remember that copies are expected to point to the same value/update publisher.
-        var proxy = self
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
-        return .init(
+        .init(
             updates: updates
                 .eraseToAnyPublisher()
                 .map(keyPath)
@@ -29,10 +28,10 @@ public extension WriteableProperty {
                 .removeDuplicates()
                 .dropFirst()
         ) {
-            proxy.value[keyPath: keyPath]
+            value[keyPath: keyPath]
         } setter: { newValue in
-            guard newValue != proxy.value[keyPath: keyPath] else { return }
-            proxy.value[keyPath: keyPath] = newValue
+            guard newValue != value[keyPath: keyPath] else { return }
+            value[keyPath: keyPath] = newValue
         }
     }
 }

@@ -57,7 +57,7 @@ public struct ComposableWriteableProperty<Value: Equatable>: WriteableProperty {
             getter()
         }
 
-        set {
+        nonmutating set {
             setter(newValue)
         }
     }
