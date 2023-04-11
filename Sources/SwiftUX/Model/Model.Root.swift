@@ -23,7 +23,7 @@ public extension ComposableWriteableProperty {
         var storage = initialValue
         let subject = PassthroughSubject<Value, Never>()
         return .init(updates: subject) {
-            return storage
+            storage
         } setter: { newValue in
             guard storage != newValue else { return }
             storage = newValue
