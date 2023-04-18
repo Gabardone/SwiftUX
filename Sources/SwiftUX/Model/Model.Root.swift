@@ -8,8 +8,7 @@
 import Combine
 import Foundation
 
-// public extension Model.Writeable
-public extension ComposableWriteableProperty {
+public extension Model {
     /**
      Returns a Model.Writeable that manages a value initialized with the given one.
 
@@ -19,10 +18,10 @@ public extension ComposableWriteableProperty {
      - Parameter initialValue: The initial value of the model.
      - Returns: A read/write model property whose value is `initialValue`
      */
-    static func root(initialValue: Value) -> Self {
+    static func root(initialValue: Value) -> some WriteableProperty<Value> {
         var storage = initialValue
         let subject = PassthroughSubject<Value, Never>()
-        return .init(updates: subject) {
+        return ComposableWriteableProperty(updates: subject) {
             storage
         } setter: { newValue in
             guard storage != newValue else { return }

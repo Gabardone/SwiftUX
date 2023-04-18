@@ -28,7 +28,7 @@ public protocol ReadOnlyProperty<Value> {
      */
     associatedtype Value: Equatable
 
-    typealias UpdatePublisher = Publisher<Value, Never>
+    typealias UpdatePublisher = any Publisher<Value, Never>
 
     // MARK: - API
 
@@ -51,7 +51,7 @@ public protocol ReadOnlyProperty<Value> {
      Beyond that the protocol makes no guarantees about the publisher's behavior beyond the baseline ones detailed in
      the Combine documentation, but an implementation may go beyond those as long as all points of use are in accord.
      */
-    var updates: any UpdatePublisher { get }
+    var updates: UpdatePublisher { get }
 }
 
 public extension ReadOnlyProperty {
@@ -63,9 +63,7 @@ public extension ReadOnlyProperty {
      - Returns: a readonly model property that references the same value as the caller, including update publisher
      behavior.
      */
-    func readonly() -> Model<Value>.ReadOnly {
-        .init(updates: updates) {
-            self.value
-        }
+    func readonly() -> some ReadOnlyProperty<Value> {
+        AnyReadOnlyProperty(wrapped: self)
     }
 }

@@ -16,11 +16,13 @@ public extension WriteableProperty {
      - Parameter keyPath: The key path pointing to the property of the caller we want the new model property to manage.
      - Returns: A read/write model property that manages the value at the caller's `keyPath`.
      */
-    func writableKeyPath<Derived: Equatable>(_ keyPath: WritableKeyPath<Value, Derived>) -> Model<Derived>.Writeable {
+    func writableKeyPath<Derived: Equatable>(
+        _ keyPath: WritableKeyPath<Value, Derived>
+    ) -> some WriteableProperty<Derived> {
         // Required for compilation. Remember that copies are expected to point to the same value/update publisher.
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
-        .init(
+        ComposableWriteableProperty(
             updates: updates
                 .eraseToAnyPublisher()
                 .map(keyPath)
@@ -46,10 +48,10 @@ public extension ReadOnlyProperty {
      - Parameter keyPath: The key path pointing to the property of the caller we want the new model property to manage.
      - Returns: A read-only model property that manages the value at the caller's `keyPath`.
      */
-    func readOnlyKeyPath<Derived: Equatable>(_ keyPath: KeyPath<Value, Derived>) -> Model<Derived>.ReadOnly {
+    func readOnlyKeyPath<Derived: Equatable>(_ keyPath: KeyPath<Value, Derived>) -> some ReadOnlyProperty<Derived> {
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.
-        .init(
+        ComposableReadOnlyProperty(
             updates: updates
                 .eraseToAnyPublisher()
                 .map(keyPath)

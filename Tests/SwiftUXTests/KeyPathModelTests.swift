@@ -19,7 +19,7 @@ final class KeyPathModelTests: XCTestCase {
     func testReadOnlyKeyPathModel() {
         let initialValue = Dummy(string: "Potato", integer: 7)
         let secondValue = Dummy(string: "No Potato", integer: 0)
-        var rootModel = Model.Writeable.root(initialValue: initialValue)
+        let rootModel = Model.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.
@@ -79,7 +79,7 @@ final class KeyPathModelTests: XCTestCase {
     func testReadWriteKeyPathModelParentalChangePropagation() {
         let initialValue = Dummy(string: "Potato", integer: 7)
         let secondValue = Dummy(string: "No Potato", integer: 0)
-        var rootModel = Model.Writeable.root(initialValue: initialValue)
+        let rootModel = Model.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.
@@ -140,7 +140,7 @@ final class KeyPathModelTests: XCTestCase {
         let initialValue = Dummy(string: "Potato", integer: 7)
         let secondValue = Dummy(string: "No Potato", integer: 7)
         let thirdValue = Dummy(string: "No Potato", integer: 0)
-        let rootModel = Model.Writeable.root(initialValue: initialValue)
+        let rootModel = Model.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.
@@ -160,7 +160,7 @@ final class KeyPathModelTests: XCTestCase {
         }
 
         let stringKeyPath = \Dummy.string
-        var stringModel = rootModel.writableKeyPath(stringKeyPath)
+        let stringModel = rootModel.writableKeyPath(stringKeyPath)
         let stringExpectation = expectation(description: "String keypath model property was updated")
         let stringSubscription = stringModel.updates.sink { [rootModel] newValue in
             stringExpectation.fulfill()
@@ -173,7 +173,7 @@ final class KeyPathModelTests: XCTestCase {
         }
 
         let integerKeyPath = \Dummy.integer
-        var integerModel = rootModel.writableKeyPath(integerKeyPath)
+        let integerModel = rootModel.writableKeyPath(integerKeyPath)
         let integerExpectation = expectation(description: "Integer keypath model property was updated")
         let integerSubscription = integerModel.updates.sink { [rootModel] newValue in
             integerExpectation.fulfill()
@@ -201,7 +201,7 @@ final class KeyPathModelTests: XCTestCase {
     /// Checks that updates on a keypath model property with the same value cause no update callbacks.
     func testEqualityDoesNotUpdateAnyone() {
         let initialValue = Dummy(string: "Potato", integer: 7)
-        let rootModel = Model.Writeable.root(initialValue: initialValue)
+        let rootModel = Model.root(initialValue: initialValue)
 
         // We need to capture `rootModel` explicitly as otherwise we're importing a reference that is modified during
         // modification.
@@ -212,7 +212,7 @@ final class KeyPathModelTests: XCTestCase {
         }
 
         let stringKeyPath = \Dummy.string
-        var stringModel = rootModel.writableKeyPath(stringKeyPath)
+        let stringModel = rootModel.writableKeyPath(stringKeyPath)
         let stringExpectation = expectation(description: "String keypath model property was updated")
         stringExpectation.isInverted = true
         let stringSubscription = stringModel.updates.sink { _ in
@@ -220,7 +220,7 @@ final class KeyPathModelTests: XCTestCase {
         }
 
         let integerKeyPath = \Dummy.integer
-        var integerModel = rootModel.writableKeyPath(integerKeyPath)
+        let integerModel = rootModel.writableKeyPath(integerKeyPath)
         let integerExpectation = expectation(description: "Integer keypath model property was updated")
         integerExpectation.isInverted = true
         let integerSubscription = integerModel.updates.sink { _ in
