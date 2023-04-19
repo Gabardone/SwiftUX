@@ -14,7 +14,7 @@ final class RootModelTests: XCTestCase {
         let initialValue = "Potato"
         let secondValue = "Sweet Potato"
 
-        let rootModel = Model.root(initialValue: "Potato")
+        let rootModel = WriteableProperty.root(initialValue: "Potato")
 
         // Verify that `value` returns what we initialized with.
         XCTAssertEqual(rootModel.value, initialValue)
@@ -47,7 +47,7 @@ final class RootModelTests: XCTestCase {
     func testEqualityDoesNotUpdate() {
         let value = "Potato"
 
-        let rootModel = Model.root(initialValue: "Potato")
+        let rootModel = WriteableProperty.root(initialValue: "Potato")
 
         let updateExpectation = expectation(description: "Update subscription called")
         updateExpectation.isInverted = true

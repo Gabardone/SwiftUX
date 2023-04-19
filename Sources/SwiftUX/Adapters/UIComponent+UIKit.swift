@@ -15,12 +15,15 @@ import UIKit
  Make your view controllers inherit from this class as to take care of all the drudgery of setting up the controller and
  initializer song and dance.
 
- You can use something other than a `SwiftUX.Controller` to instantiate a concrete type out of this generic one but
- you'll miss on some of the benefits.
+ The view controller will make sure to set itself up properly with the given controller, including initializing UI,
+ state and subscriptions in the right order as to avoid initialization glitches.
  */
 open class UIComponent<Controller>: UIViewController where Controller: ControllerProtocol {
     // MARK: - Types
 
+    /**
+     The controller type managed by this `UIComponent`.
+     */
     public typealias Controller = Controller
 
     // MARK: - Initializers
@@ -43,7 +46,7 @@ open class UIComponent<Controller>: UIViewController where Controller: Controlle
     }
 
     /**
-     Decoding initializer not available for `UIComponent` and its subclasses.
+     Decoding initializer not currently available for `UIComponent` and its subclasses.
      */
     @available(*, unavailable)
     public required init?(coder _: NSCoder) {
@@ -52,17 +55,28 @@ open class UIComponent<Controller>: UIViewController where Controller: Controlle
 
     // MARK: - Stored Properties
 
+    /**
+     The UI component's controller. No `protected` in Swift so everyone gets to look at it.
+     */
     public let controller: Controller
 
     private var controllerUpdateSubscription: (any Cancellable)?
 
     // MARK: - UIViewController Overrides
 
+    /**
+     Orderly initialization override.
+
+     The override in UIComponent ensures that initialization happens in the right order. Specifically:
+     1. Calls `setUpUI` to ensure common UI components are initialized.
+     2. Calls `updateUI` with the current controller model value as to set up the UI state accordingly.
+     3. Starts the subscription to the controller model updates.
+     */
     override open func viewDidLoad() {
         super.viewDidLoad()
 
         // Set up any UI left (even if this was loaded from .xib we probably need to tie up a few things).
-        setupUI()
+        setUpUI()
 
         // Get all the UI up to date before starting subscriptions as to avoid bouncebacks and weirdness.
         updateUI(modelValue: controller.modelProperty.value)
@@ -81,9 +95,9 @@ open class UIComponent<Controller>: UIViewController where Controller: Controlle
      This abstract method is separate from `viewDidLoad` so this class' override of the `UIViewController` method can
      enforce the order in which UI is set up and the subscription to the controller model updates is started.
 
-     There is no need to call `super` when overriding this method.
+     There is no need to call `super` when overriding this method. There is no need to override it either.
      */
-    open func setupUI() {
+    open func setUpUI() {
         // This method intentionally left blank.
     }
 
@@ -94,7 +108,7 @@ open class UIComponent<Controller>: UIViewController where Controller: Controlle
      gets too unwieldy you should probably think of decomposing your view controller into subcomponents.
 
      Don't call `super`, this is a pure abstract method. Even if your view controller is purely static you should
-     provide an implementation override to run during UI initialization.
+     provide an implementation override to run during UI initialization (see ``UIComponent.viewDidLoad``)
      - Warning: At the time of this call `controller.model` may not be up to date with `newValue` yet, although
      `modelProperty.value` should already contain `newValue` per the API contract of `ReadOnlyProperty`. Either way you
      shouldn't depend on access to either of those for the implementation of this method.

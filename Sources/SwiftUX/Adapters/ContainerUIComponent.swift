@@ -9,6 +9,15 @@
 import AutoLayoutHelpers
 import UIKit
 
+/**
+ A UIComponent that whose main task is to contain another one.
+
+ This class makes for easy setup of containment of a single view controller in charge of more complex UI. It can also
+ be used for multiple modality content i.e. management of a loading operation.
+
+ The class vends a `contentViewController` property that can be set to any view controller, as well as override points
+ for the content's superview and enclosing layout area.
+ */
 open class ContainerUIComponent<Controller>: UIComponent<Controller> where Controller: ControllerProtocol {
     public var contentViewController: UIViewController? {
         willSet {

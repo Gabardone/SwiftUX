@@ -2,68 +2,53 @@
 //  ReadOnlyProperty.swift
 //
 //
-//  Created by Óscar Morales Vivó on 3/25/23.
+//  Created by Óscar Morales Vivó on 4/17/23.
 //
 
 import Combine
 import Foundation
 
 /**
- An abstraction of an observable read-only property.
+ Standard implementation of a read-only `Property`
 
- There's no `ReadOnlyProperty` & `ObservableProperty` pair because each can be expressed separately without declaring
- any new types. This protocol declares the encapsulation of both behaviors as that's what we'll want to model a view
- layer of the property vendor.
-
- While the protocol doesn't require implementations to be classes, the value held should be semantically treated as if
- by reference. In other words if you assign a property to a different `let` or `var`, they should both point to the
- same value and its `updates` publisher should be the same.
+ Since they are built with a publisher and a getter block, any specific functionality can be achieved with some smart
+ functional programming. For the most part you should use the provided factory methods to build them up.
  */
-public protocol ReadOnlyProperty<Value> {
+public struct ReadOnlyProperty<Value: Equatable>: Property {
+    // MARK: - Initialization
+
+    /**
+     Initialization of a read-only property.
+
+     Most of the time we'll want to use one of the factory methods, but if needed you can build a read-only model by
+     hand. See the provided ones for examples on how to build these.
+     - Note: Swift made us redeclare the default initializer here so it could be public 🤷🏽‍♂️
+     - Parameter updates: The publisher that vends updates to the property.
+     - Parameter getter: A block that returns the current value of the property.
+     */
+    public init(updates: any Publisher<Value, Never>, getter: @escaping Getter) {
+        self.updates = updates
+        self.getter = getter
+    }
+
     // MARK: - Types
 
     /**
-     The value type held by the model. Adoption of `Equatable` is required to be able to easily short-circuit update
-     loops.
+     A block that implements a `ReadOnlyProperty`'s getter.
+
+     Note that the block is always expected to succeed without complaint.
      */
-    associatedtype Value: Equatable
+    public typealias Getter = () -> Value
 
-    typealias UpdatePublisher = any Publisher<Value, Never>
+    // MARK: - Stored Properties
 
-    // MARK: - API
+    public let updates: any Publisher<Value, Never>
 
-    /**
-     Returns the current value of the property. When allowed, directly sets the value of the property
+    private let getter: Getter
 
-     The protocol makes no guarantees about concurrency safety (implementations may do so)
-     */
-    var value: Value { get }
+    // MARK: - Computed Properties
 
-    /**
-     A publisher that calls its subscribers whenever the property value changes.
-
-     Subscribing to this publisher will **not** cause the subscription to be called. In addition, the publisher will
-     call its subscribers every time the value changes and _only_ when the value changes (in other words, there is no
-     need to call `removeDuplicates` on the publisher before subscribing).
-
-     Unlike `@Published`, at the time the subscribers are called `value` should already hold its new value.
-
-     Beyond that the protocol makes no guarantees about the publisher's behavior beyond the baseline ones detailed in
-     the Combine documentation, but an implementation may go beyond those as long as all points of use are in accord.
-     */
-    var updates: UpdatePublisher { get }
-}
-
-public extension ReadOnlyProperty {
-    /**
-     Converter to explicit readonly model property type.
-
-     Since most logic will deal with the explicit model property types, this allows us to quickly convert a read/write
-     or editable type into a readonly one.
-     - Returns: a readonly model property that references the same value as the caller, including update publisher
-     behavior.
-     */
-    func readonly() -> some ReadOnlyProperty<Value> {
-        AnyReadOnlyProperty(wrapped: self)
+    public var value: Value {
+        getter()
     }
 }
