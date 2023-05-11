@@ -116,7 +116,7 @@ open class UIComponent<Controller>: UIViewController where Controller: Controlle
      */
     open func updateUI(modelValue _: Controller.ModelProperty.Value) {
         // This method intentionally left boom.
-        preconditionFailure("UIComponent.updateUI(modelValue:) is expected to be overridden.")
+        assertionFailure("UIComponent.updateUI(modelValue:) is expected to be overridden.")
     }
 }
 #endif
