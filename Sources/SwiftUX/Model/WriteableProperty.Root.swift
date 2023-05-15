@@ -1,5 +1,5 @@
 //
-//  WriteableProperty.Root.swift
+//  WritableProperty.Root.swift
 //
 //
 //  Created by Óscar Morales Vivó on 3/26/23.
@@ -8,9 +8,9 @@
 import Combine
 import Foundation
 
-public extension WriteableProperty {
+public extension WritableProperty {
     /**
-     Returns a WriteableProperty that directly manages a value, initialized with the given one.
+     Returns a WritableProperty that directly manages a value, initialized with the given one.
 
      This model is the simplest to use as a root model for a hierarchy or simply as a modifiable model for simple
      implementations. There is no read-only version of this method as it doesn't make a ton of sense to have a root
@@ -19,7 +19,7 @@ public extension WriteableProperty {
      - Parameter initialValue: The initial value of the model.
      - Returns: A read/write model property whose value is `initialValue`
      */
-    static func root(initialValue: Value) -> WriteableProperty<Value> {
+    static func root(initialValue: Value) -> WritableProperty<Value> {
         var storage = initialValue
         let subject = PassthroughSubject<Value, Never>()
         return .init(updates: subject) {

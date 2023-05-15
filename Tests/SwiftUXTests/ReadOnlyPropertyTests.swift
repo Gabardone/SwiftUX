@@ -13,7 +13,7 @@ final class ReadOnlyPropertyTests: XCTestCase {
     func testReadonlyBehavior() {
         let initialValue = "Potato"
         let laterValue = "Chocolate Milk"
-        let rootModelProperty = WriteableProperty.root(initialValue: initialValue)
+        let rootModelProperty = WritableProperty.root(initialValue: initialValue)
 
         let readonlyProperty = rootModelProperty.readonly()
         XCTAssertEqual(readonlyProperty.value, initialValue)

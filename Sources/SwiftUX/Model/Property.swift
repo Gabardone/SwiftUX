@@ -11,7 +11,7 @@ import Foundation
 /**
  An abstraction of an observable, readable property.
 
- While controllers work on two configurable value types (`ReadOnlyProperty` and `WriteableProperty`) having this
+ While controllers work on two configurable value types (`ReadOnlyProperty` and `WritableProperty`) having this
  protocol for both of them to adopt allows us to implement some common functionality for both types.
 
  While the protocol doesn't require implementations to be classes —in fact neither of the commonly used are—, the value

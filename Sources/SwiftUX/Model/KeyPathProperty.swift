@@ -7,9 +7,9 @@
 
 import Foundation
 
-public extension WriteableProperty {
+public extension WritableProperty {
     /**
-     Returns a `WriteableProperty` that vends the value at the caller's `keyPath`
+     Returns a `WritableProperty` that vends the value at the caller's `keyPath`
 
      This utility allows to easily build a hierarchy of model properties, with the one returned from this method both
      fetching its value and writing it on top of its parent (the caller).
@@ -18,7 +18,7 @@ public extension WriteableProperty {
      */
     func writableKeyPath<Derived: Equatable>(
         _ keyPath: WritableKeyPath<Value, Derived>
-    ) -> WriteableProperty<Derived> {
+    ) -> WritableProperty<Derived> {
         // Required for compilation. Remember that copies are expected to point to the same value/update publisher.
         // The update publisher requires being prepended with the current value and then dropping it as to prime
         // `removeDuplicates` so changes in the parent outside our purview to trigger updates.

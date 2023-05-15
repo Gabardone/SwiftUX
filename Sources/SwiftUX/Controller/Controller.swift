@@ -38,7 +38,7 @@ private let controllerLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, 
  to intantiate the controller type in those cases.
 
  Most of the time app controllers will be explicit subclasses of `Controller`, made easier to declare by the
- `ReadOnlyController` and `WriteableController` `typealias` declarations and often managed through use of a
+ `ReadOnlyController` and `WritableController` `typealias` declarations and often managed through use of a
  `ObjectManager`. Specific app functionality can then be declared on those subclasses. Where desired, common
  functionality for controllers managing the same type can be provided through extensions.
  */
@@ -52,7 +52,7 @@ open class Controller<ID: Hashable, Model: Equatable, ModelProperty: Property, P
      types.
      - parameter id: The id for the controller. It is immutable once set.
      - parameter modelProperty: Model property that this controller will manage. Cannot be swapped with a different one
-     once set. Its contents can be edited for a controller where `ModelProperty == WriteableController<Model>`
+     once set. Its contents can be edited for a controller where `ModelProperty == WritableController<Model>`
      - parameter persistence: The persistence that the controller will use to persist and fetch its data.
      */
     public init(id: ID, modelProperty: ModelProperty, persistence: Persistence) {
@@ -122,7 +122,7 @@ public extension Controller where Persistence == Void {
      All other parameters are the same as in the designated initializer.
      - parameter id: The id for the controller. It is immutable once set.
      - parameter modelProperty: Model property that this controller will manage. Cannot be swapped with a different one
-     once set. Its contents can be edited for a controller where `ModelProperty == WriteableController<Model>`
+     once set. Its contents can be edited for a controller where `ModelProperty == WritableController<Model>`
      */
     convenience init(id: ID, modelProperty: ModelProperty) {
         self.init(id: id, modelProperty: modelProperty, persistence: ())
@@ -137,18 +137,18 @@ public extension Controller where Persistence == Void {
 public typealias ReadOnlyController<ID: Hashable, Model: Equatable, Persistence> =
     Controller<ID, Model, ReadOnlyProperty<Model>, Persistence>
 
-// MARK: WriteableController
+// MARK: WritableController
 
 /**
- When subclassing a writeable controller, use this typealias to make the declaration both shorter and more readable.
+ When subclassing a writable controller, use this typealias to make the declaration both shorter and more readable.
  */
 public
-typealias WriteableController<ID: Hashable, Model: Equatable, Persistence> =
-    Controller<ID, Model, WriteableProperty<Model>, Persistence>
+typealias WritableController<ID: Hashable, Model: Equatable, Persistence> =
+    Controller<ID, Model, WritableProperty<Model>, Persistence>
 
-public extension Controller where ModelProperty == WriteableProperty<Model> {
+public extension Controller where ModelProperty == WritableProperty<Model> {
     /**
-     The edit block type for a controller with a writeable model.
+     The edit block type for a controller with a writable model.
 
      The block takes an initial value, applies any changes to it as desired, and returns the resulting value.
      */
