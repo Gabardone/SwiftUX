@@ -79,10 +79,10 @@ open class UIComponent<Controller>: UIViewController where Controller: Controlle
         setUpUI()
 
         // Get all the UI up to date before starting subscriptions as to avoid bouncebacks and weirdness.
-        updateUI(modelValue: controller.modelProperty.value)
+        updateUI(modelValue: controller.model.value)
 
         // Initiate subscription to controller model's updates.
-        controllerUpdateSubscription = controller.modelProperty.updates.sink { [weak self] newValue in
+        controllerUpdateSubscription = controller.model.updates.sink { [weak self] newValue in
             self?.updateUI(modelValue: newValue)
         }
     }

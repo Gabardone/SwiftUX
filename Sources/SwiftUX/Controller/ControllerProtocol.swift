@@ -18,5 +18,5 @@ import Foundation
 public protocol ControllerProtocol: Identifiable {
     associatedtype ModelProperty: Property
 
-    var modelProperty: ModelProperty { get }
+    var model: ModelProperty { get }
 }

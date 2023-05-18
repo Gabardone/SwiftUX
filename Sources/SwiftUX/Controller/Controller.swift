@@ -44,7 +44,7 @@ private let controllerLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, 
  */
 @MainActor
 open class Controller<ID: Hashable, Model: Equatable, ModelProperty: Property, Persistence>:
-    ControllerProtocol, ObservableObject where ModelProperty.Value == Model {
+    ControllerProtocol where ModelProperty.Value == Model {
     /**
      Designated initializer.
 
@@ -55,15 +55,10 @@ open class Controller<ID: Hashable, Model: Equatable, ModelProperty: Property, P
      once set. Its contents can be edited for a controller where `ModelProperty == WritableController<Model>`
      - parameter persistence: The persistence that the controller will use to persist and fetch its data.
      */
-    public init(id: ID, modelProperty: ModelProperty, persistence: Persistence) {
+    public init(id: ID, model: ModelProperty, persistence: Persistence) {
         self.id = id
-        self.model = modelProperty.value
-        self.modelProperty = modelProperty
+        self.model = model
         self.persistence = persistence
-
-        // Make sure updates on the abstract model property reflect on the stored property. If there's an error
-        // upstream we just stop updating since `@Published` doesn't support errors.
-        modelProperty.updates.assign(to: &$model)
     }
 
     public typealias ID = ID
@@ -78,24 +73,6 @@ open class Controller<ID: Hashable, Model: Equatable, ModelProperty: Property, P
     public let id: ID
 
     /**
-     The model value currently held by the controller.
-
-     Vended as an `@Published` property wrapper so it can more easily be used to feed SwiftUI views. For UIKit and other
-     approaches it's safer to use `modelProperty` directly, both for current value and published updates.
-
-     The setter is not publically accessible. the property value should only be updated from the outside indirectly
-     through use of `apply(edit:)` which will also update the model property. Per the behavior of its managed model
-     property it should only update if the new value is different than the currently stored one, so there is no need to
-     use `removeDuplicates` on the projected publisher.
-
-     - Warning: `@Publisher` emits updates on `willSet`, so remember to use the given value but not check on the
-     original property value when receiving updates to your subscription. That also means that often child controllers
-     will receive updates before their parents have updated.
-     */
-    @Published
-    public private(set) var model: Model
-
-    /**
      The persistence used by the controller to persist edits and fetch data.
 
      While it should _not_ be used from the outside, access is often needed to build up persistence for child
@@ -107,7 +84,7 @@ open class Controller<ID: Hashable, Model: Equatable, ModelProperty: Property, P
      The model property that the controller is managing. If using the validated or persisted APIs it shouldn't be
      updated directly unless
      */
-    public let modelProperty: ModelProperty
+    public let model: ModelProperty
 }
 
 // MARK: - Convenience for non-persisting controllers
@@ -125,7 +102,7 @@ public extension Controller where Persistence == Void {
      once set. Its contents can be edited for a controller where `ModelProperty == WritableController<Model>`
      */
     convenience init(id: ID, modelProperty: ModelProperty) {
-        self.init(id: id, modelProperty: modelProperty, persistence: ())
+        self.init(id: id, model: modelProperty, persistence: ())
     }
 }
 
@@ -165,6 +142,6 @@ public extension Controller where ModelProperty == WritableProperty<Model> {
      - Todo: Persistence support.
      */
     func apply(edit: Edit) {
-        modelProperty.value = edit(modelProperty.value)
+        model.value = edit(model.value)
     }
 }
