@@ -14,7 +14,7 @@ import Foundation
  Since they are built with a publisher, getter and setter blocks, any specific functionality can be achieved with some
  smart functional programming. For the most part you should use the provided factory methods to build them up.
  */
-public struct WritableProperty<Value: Equatable>: Property {
+public struct WritableProperty<Value: Equatable>: MutableProperty {
     // MARK: - Initialization
 
     /**

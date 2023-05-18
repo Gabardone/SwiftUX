@@ -43,8 +43,7 @@ private let controllerLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, 
  functionality for controllers managing the same type can be provided through extensions.
  */
 @MainActor
-open class Controller<ID: Hashable, Model: Equatable, ModelProperty: Property, Persistence>:
-    ControllerProtocol where ModelProperty.Value == Model {
+open class Controller<ID: Hashable, ModelProperty: Property, Persistence>: ControllerProtocol {
     /**
      Designated initializer.
 
@@ -63,7 +62,7 @@ open class Controller<ID: Hashable, Model: Equatable, ModelProperty: Property, P
 
     public typealias ID = ID
 
-    public typealias Model = Model
+    public typealias Model = ModelProperty.Value
 
     public typealias Persistence = Persistence
 
@@ -112,7 +111,7 @@ public extension Controller where Persistence == Void {
  When subclassing a read only controller, use this typealias to make the declaration both shorter and more readable.
  */
 public typealias ReadOnlyController<ID: Hashable, Model: Equatable, Persistence> =
-    Controller<ID, Model, ReadOnlyProperty<Model>, Persistence>
+    Controller<ID, ReadOnlyProperty<Model>, Persistence>
 
 // MARK: WritableController
 
@@ -121,9 +120,9 @@ public typealias ReadOnlyController<ID: Hashable, Model: Equatable, Persistence>
  */
 public
 typealias WritableController<ID: Hashable, Model: Equatable, Persistence> =
-    Controller<ID, Model, WritableProperty<Model>, Persistence>
+    Controller<ID, WritableProperty<Model>, Persistence>
 
-public extension Controller where ModelProperty == WritableProperty<Model> {
+public extension Controller where ModelProperty: MutableProperty {
     /**
      The edit block type for a controller with a writable model.
 
