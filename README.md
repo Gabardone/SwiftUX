@@ -7,4 +7,6 @@ The API is not stable yet and is being co-developed with a number of personal ap
 a useful way. As such, I cannot recommend for anyone else to use it as it currently stands. I will happily take
 feedback anyway. 
 
+Simple adapters for use with UIKit/AppKit can be found at https://github.com/Gabardone/UIComponents
+
 Currently in use in https://github.com/Gabardone/LunchQuest.git as a first test case.
