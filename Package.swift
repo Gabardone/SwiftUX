@@ -7,11 +7,11 @@ let package = Package(
     name: "SwiftUX",
     platforms: [
         // We require Combine so that limits what we support.
-        .iOS(.v14),
-        .macOS(.v11),
-        .macCatalyst(.v14),
-        .tvOS(.v14),
-        .watchOS(.v7)
+        .iOS(.v13),
+        .macOS(.v10_15),
+        .macCatalyst(.v13),
+        .tvOS(.v13),
+        .watchOS(.v6)
     ],
     products: [
         .library(
