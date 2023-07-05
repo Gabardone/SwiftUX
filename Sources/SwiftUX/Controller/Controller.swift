@@ -50,7 +50,7 @@ open class Controller<ID: Hashable, ModelProperty: Property, Persistence>: Contr
      The designated initializer for a controller takes an id, a model property and a persistence value of the expected
      types.
      - parameter id: The id for the controller. It is immutable once set.
-     - parameter modelProperty: Model property that this controller will manage. Cannot be swapped with a different one
+     - parameter model: Model property that this controller will manage. Cannot be swapped with a different one
      once set. Its contents can be edited for a controller where `ModelProperty == WritableController<Model>`
      - parameter persistence: The persistence that the controller will use to persist and fetch its data.
      */
@@ -97,11 +97,11 @@ public extension Controller where Persistence == Void {
 
      All other parameters are the same as in the designated initializer.
      - parameter id: The id for the controller. It is immutable once set.
-     - parameter modelProperty: Model property that this controller will manage. Cannot be swapped with a different one
+     - parameter model: Model property that this controller will manage. Cannot be swapped with a different one
      once set. Its contents can be edited for a controller where `ModelProperty == WritableController<Model>`
      */
-    convenience init(id: ID, modelProperty: ModelProperty) {
-        self.init(id: id, model: modelProperty, persistence: ())
+    convenience init(id: ID, model: ModelProperty) {
+        self.init(id: id, model: model, persistence: ())
     }
 }
 
@@ -133,7 +133,7 @@ public extension Controller where ModelProperty: MutableProperty {
     /**
      Applies the given edit to the current model value and updates it with the result.
 
-     The `model` property of the controller will be updated by its subscription to `modelProperty.updates` immediately
+     The `model` property of the controller will be updated by its subscription to `model.updates` immediately
      after the value is changed.
      - Parameter edit: The edit operation to apply to the model's value. It gets as input the current value of the model
      and outputs the new value.
