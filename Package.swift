@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SwiftUX",
     platforms: [
-        // We require Combine so that limits what we support.
+        // We require Swift.Logger which limits us to iOS14/macOS11/watchOS7 etc.
         .iOS(.v14),
         .macOS(.v11),
         .macCatalyst(.v14),
