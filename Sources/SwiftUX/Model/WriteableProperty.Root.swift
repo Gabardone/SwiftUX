@@ -1,5 +1,5 @@
 //
-//  WritableProperty.Root.swift
+//  WriteableProperty.Root.swift
 //
 //
 //  Created by Óscar Morales Vivó on 3/26/23.
